@@ -4,16 +4,18 @@ import java.io.IOException;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.nopcommerce.pageObjects.AddcustomerPage;
 import com.nopcommerce.pageObjects.LoginPage;
+import com.nopcommerce.utilities.XLUtils;
 
 public class TC_AddCustomerTest_003 extends BaseClass
 {
 
-	@Test
-	public void addNewCustomer() throws IOException, InterruptedException
+	@Test(dataProvider="Createcustomer")
+	public void addNewCustomer(String username,String password,String pwd1,String CustomerRoles,String ManagerOfVendor,String Gender,String FirstName,String LastName,String Dob,String CompanyName,String AdminContent,String Exmessage ) throws IOException, InterruptedException
 	{
 		driver.get(baseURL);
 		
@@ -38,24 +40,24 @@ public class TC_AddCustomerTest_003 extends BaseClass
 		String email = randomestring() + "@gmail.com";
 		addcust.setEmail(email);
 				
-		addcust.setPassword("test123");
+		addcust.setPassword(pwd1);
 		
 		//Registered - default
 		//The customer cannot be in both 'Guests' and 'Registered' customer roles
 		//Add the customer to 'Guests' or 'Registered' customer role
-		addcust.setCustomerRoles("Guest");
+		addcust.setCustomerRoles(CustomerRoles);
 		
-		addcust.setManagerOfVendor("Vendor 2");
+		addcust.setManagerOfVendor(ManagerOfVendor);
 		
-		addcust.setGender("Male");
+		addcust.setGender(Gender);
 		
-		addcust.setFirstName("Pavan");
-		addcust.setLastName("Kumar");
+		addcust.setFirstName(FirstName);
+		addcust.setLastName(LastName);
 		
-		addcust.setDob("7/05/1985"); // Format: D/MM/YYY
+		addcust.setDob(Dob); // Format: D/MM/YYY
 		
-		addcust.setCompanyName("busyQA");
-		addcust.setAdminContent("This is for testing.........");
+		addcust.setCompanyName(CompanyName);
+		addcust.setAdminContent(AdminContent);
 	
 		addcust.clickOnSave();
 		
@@ -66,7 +68,7 @@ public class TC_AddCustomerTest_003 extends BaseClass
 		String msg = driver.findElement(By.tagName("body")).getText();
 			
 		
-		if(msg.contains("The new customer has been added successfully"))
+		if(msg.contains(Exmessage))
 		{
 			Assert.assertTrue(true);
 			logger.info("test case passed....");
@@ -79,6 +81,26 @@ public class TC_AddCustomerTest_003 extends BaseClass
 				
 	}
 	
-	
+	@DataProvider(name="Createcustomer")
+	public String [][] getData() throws IOException
+	{
+		String path=System.getProperty("user.dir")+"/src/test/java/com/nopcommerce/testData/LoginData.xlsx";
+		
+		int rownum=XLUtils.getRowCount(path, "Sheet2");
+		int colcount=XLUtils.getCellCount(path,"Sheet2",1);
+		
+		String createcustomerdata[][]=new String[rownum][colcount];
+		
+		for(int i=1;i<=rownum;i++)
+		{
+			for(int j=0;j<colcount;j++)
+			{
+				createcustomerdata[i-1][j]=XLUtils.getCellData(path,"Sheet2", i,j);
+			}
+		}
+		
+		return createcustomerdata;
+		
+	}
 	
 }

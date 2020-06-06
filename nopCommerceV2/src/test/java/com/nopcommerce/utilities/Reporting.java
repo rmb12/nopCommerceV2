@@ -19,6 +19,7 @@ public class Reporting extends TestListenerAdapter
 {
 	
 	public ExtentSparkReporter htmlReporter;
+	public ExtentSparkReporter htmlReporter1;
 	public ExtentReports extent;
 	public ExtentTest logger;
 	
@@ -27,21 +28,25 @@ public class Reporting extends TestListenerAdapter
 	{
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());//time stamp
 		String repName="Test-Report-"+timeStamp+".html";
+		String repName1="Test-Report.html";
 		htmlReporter=new ExtentSparkReporter(System.getProperty("user.dir")+ "/Results/"+repName);//specify location of the report
-		
+		htmlReporter1=new ExtentSparkReporter(System.getProperty("user.dir")+ "/Results/"+repName1);//specify location of the report
 		
 		extent=new ExtentReports();
-		
+		extent.attachReporter(htmlReporter1);
 		extent.attachReporter(htmlReporter);
 		extent.setSystemInfo("Host name","localhost");
 		extent.setSystemInfo("Environemnt","QA");
-		extent.setSystemInfo("user","pavan");
+		extent.setSystemInfo("user","Rajashekhar");
 		extent.setSystemInfo("os","Windows");
 		extent.setSystemInfo("browser","chrome");
 		
 		htmlReporter.config().setDocumentTitle("nopCommerce Test Project"); // Tile of report
 		htmlReporter.config().setReportName("Functional Test Report"); // name of the report
 		htmlReporter.config().setTheme(Theme.STANDARD);
+		htmlReporter1.config().setDocumentTitle("nopCommerce Test Project"); // Tile of report
+		htmlReporter1.config().setReportName("Functional Test Report"); // name of the report
+		htmlReporter1.config().setTheme(Theme.STANDARD);
 	}
 	
 	public void onTestSuccess(ITestResult tr)
