@@ -20,14 +20,14 @@
 	
 	
 	
-	 <!--  <test name="Test2">
+	  <test name="Test2">
 		<parameter name="browser" value="firefox" />
 		<classes>
 			<class name="com.nopcommerce.testCases.TC_LoginTest_001" /> 
 		</classes>
 	</test> 
 	
-	
+	<!-- 
 	<test name="Test3">
 		<parameter name="browser" value="ie" />
 		<classes>
